@@ -17,13 +17,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CleanDataBaseService {
 
-    private AlertRepository alertRepository;
+    private final AlertRepository alertRepository;
 
     @Scheduled(cron="0 0/1 0 ? * *")
     public void cleanDB() {
         try {
             alertRepository.findAll().forEach(alert -> {
-                if(alert.getCreateDate().plusHours(1).isBefore(LocalDateTime.now())) {
+
+                if(alert.getCreateDate().compareTo(LocalDateTime.now()) > 0) {
                     alertRepository.deleteById(alert.getTicket());
                 }
             });

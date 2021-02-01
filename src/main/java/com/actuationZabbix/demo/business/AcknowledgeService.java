@@ -22,8 +22,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AcknowledgeService {
 
-    private AlertRepository alertRepository;
-    private ZabbixRepository zabbixRepository;
+    private final AlertRepository alertRepository;
+    private final ZabbixRepository zabbixRepository;
 
     @Scheduled(cron="0 0/1 0 ? * *")
     public void getAcknowledge() {
@@ -32,25 +32,27 @@ public class AcknowledgeService {
         if (files.length > 0) {
             for (int i = 0; i < Arrays.stream(files).count(); i++) {
 
-                AlertDomain alert = new AlertDomain();
-                Optional<AlertDomain> alertDomainOptional = alertRepository.findById(files[i].getName());
+                if(files[i].getName().contains("INC")) {
+                    AlertDomain alert = new AlertDomain();
+                    Optional<AlertDomain> alertDomainOptional = alertRepository.findById(files[i].getName());
 
-                if (alertDomainOptional.isPresent())
-                    alert = alertDomainOptional.get();
+                    if (alertDomainOptional.isPresent())
+                        alert = alertDomainOptional.get();
 
-                try {
-                    String resultFile = new String(Files.readAllBytes(files[i].toPath()));
-                    if (!resultFile.isEmpty()) {
-                        if(Integer.parseInt(resultFile) == 1) {
-                            zabbixRepository.acknowledgeZabbixAlert(alert.getTicket());
+                    try {
+                        String resultFile = new String(Files.readAllBytes(files[i].toPath()));
+                        if (!resultFile.isEmpty()) {
+                            if(Integer.parseInt(resultFile) == 1) {
+                                zabbixRepository.acknowledgeZabbixAlert(alert.getTicket());
 
-                            if(files[i].delete()) {
-                                alertRepository.deleteById(alert.getTicket());
+                                if(files[i].delete()) {
+                                    alertRepository.deleteById(alert.getTicket());
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }

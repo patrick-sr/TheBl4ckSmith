@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RetryCallService {
 
-    private AlertRepository repository;
-    private CallShellScriptService callService;
+    private final AlertRepository repository;
+    private final CallShellScriptService callService;
 
     @Scheduled(cron="0 0/1 0 ? * *")
     public void retryCall() {
