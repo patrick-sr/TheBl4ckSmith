@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CallShellScriptService {
 
-    private AlertRepository repository;
+    private final AlertRepository repository;
 
     int iExitValue;
     String sCommandString;

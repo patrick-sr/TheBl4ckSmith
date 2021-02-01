@@ -16,7 +16,7 @@ public class AlertDomain {
     @Id
     private String ticket;
     private String telephony;
-    private int Acknowledge;
+    private int acknowledge;
     private int countCalls;
     private LocalDateTime createDate;
 }
