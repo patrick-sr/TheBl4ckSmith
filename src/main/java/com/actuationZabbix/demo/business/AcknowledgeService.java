@@ -27,7 +27,7 @@ public class AcknowledgeService {
 
     @Scheduled(cron="0 0/1 0 ? * *")
     public void getAcknowledge() {
-        File file = new File("/Users/u002422/Documents/testHacka/");
+        File file = new File("/data/");
         File files[] = file.listFiles();
         if (files.length > 0) {
             for (int i = 0; i < Arrays.stream(files).count(); i++) {

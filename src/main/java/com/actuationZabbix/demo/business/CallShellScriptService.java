@@ -33,7 +33,7 @@ public class CallShellScriptService {
         telephoneNumber = checkAndAdjustTelephone(telephoneNumber);
         saveAlert(telephoneNumber, ticketServiceNow);
 
-        sCommandString = "sh /Users/u002422/Documents/testScript.sh " + telephoneNumber + " " + ticketServiceNow;
+        sCommandString = "sh /data/discap1.sh " + telephoneNumber + " " + ticketServiceNow;
         CommandLine oCmdLine = CommandLine.parse(sCommandString);
         DefaultExecutor oDefaultExecutor = new DefaultExecutor();
         oDefaultExecutor.setExitValue(0);
